@@ -1,0 +1,110 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+function Viewstartupbot() {
+  const [bot, setChatbots] = useState([]);
+
+  useEffect(() => {
+    const fetchbot = async () => {
+      try {
+        const response = await axios.get('http://localhost:5002/research-api/startupbot');
+        setChatbots(response.data);
+      } catch (error) {
+        console.error('Error fetching chatbots:', error);
+        toast.error('Failed to fetch chatbots');
+      }
+    };
+    fetchbot();
+  }, []);
+
+  return (
+    <div className="container mx-auto px-4 mt-10">
+      <h1 className="text-3xl font-bold mb-6">Startup References</h1>
+      <div className="overflow-x-auto">
+      <table className="min-w-full bg-white border-gray-300 shadow-md rounded-md">
+  <thead className="bg-gray-800 text-white">
+    <tr>
+    <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Sr no</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Description</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Title</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Problems</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Solution</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Technology Architect</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Technology Tool</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Schedule</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Business Canva</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Market Area</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Revenue Model</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Valuation Report</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Impact</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Recommended Technologies</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">STEAM Theory</th>
+      <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Vision Mission</th>
+    </tr>
+  </thead>
+  <tbody className="text-gray-700">
+    {bot.length > 0 ? (
+      bot.map((item, index) => (
+        <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-100">
+          <td className="px-6 py-4 w-1/9 align-top">{index + 1}</td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupdescription}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startuptitle}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupproblem}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupsolution}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startuparchitect}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startuptool}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupschedule}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupcanvamodel}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupmarketarea}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startuprevenuemodel}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupreport}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupimpact}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startuptechnologies}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupsteam}</p>
+          </td>
+          <td className="px-6 py-4 w-1/9 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.startupvision}</p>
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="15" className="px-6 py-4 text-center">No chatbots found</td>
+      </tr>
+    )}
+  </tbody>
+</table>
+      </div>
+    </div>
+  );
+}
+
+export default Viewstartupbot;
