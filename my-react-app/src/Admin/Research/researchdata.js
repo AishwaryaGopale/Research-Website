@@ -128,6 +128,8 @@ function ViewResearch() {
     yPosition += addText(item.dataset, 10, yPosition);
     yPosition = checkAndAddPage(yPosition + lineHeight);
 
+    
+
     yPosition = addHeading(`Statistical Testing:`, 10, yPosition);
     yPosition = checkAndAddPage(yPosition);
     yPosition += addText(item.stattesting, 10, yPosition);
