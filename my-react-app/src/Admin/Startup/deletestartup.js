@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 function DeleteStartup({ itemId, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/research-api/startupbot/${itemId}`);
-      toast.success('Research deleted successfully');
-      onDeleteSuccess(); // Refresh the list after successful delete
+      await axios.delete(`http://localhost:5002/research-api/startupdb/${itemId}`);
+      toast.success('startup deleted successfully');
+      onDeleteSuccess(); 
     } catch (error) {
       console.error('Error deleting startup:', error);
       toast.error('Failed to delete startup');

@@ -29,7 +29,6 @@ const LoginForm = () => {
   }
 };
 
-  
   const Reg = () => {
     navigate("/register");
   };

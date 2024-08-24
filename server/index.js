@@ -137,7 +137,33 @@ app.post("/research-api/research", (req, res) => {
 
 /////////startup idea db////////
 app.get("/research-api/startupbot", (req, res) => {
-  const sqlGet = "SELECT * FROM startupdb";
+  const sqlGet = `
+   SELECT 
+    a.email AS "useremail",
+    a.organizationname AS "organizationname",
+    b.startupid,
+    b.startupdescription,
+    b.startuptitle,
+    b.startupproblem,
+    b.startupsolution,
+    b.startuparchitect,
+    b.startuptool,
+    b.startupschedule,
+    b.startupcanvamodel,
+    b.startupmarketarea,
+    b.startuprevenuemodel,
+    b.startupreport,
+    b.startupimpact,
+    b.startuptechnologies,
+    b.startupsteam,
+    b.startupvision
+  FROM 
+  registration a
+JOIN 
+  startupdb b 
+ON 
+  a.regid = b.regid`;
+
   db.query(sqlGet, (error, result) => {
     if (error) {
       console.error("Error fetching data:", error);
@@ -206,7 +232,24 @@ app.post("/research-api/startup", (req, res) => {
 
 ///////////////////////patent button/////////////////////
 app.get("/research-api/patentbot", (req, res) => {
-  const sqlGet = "SELECT * FROM patentdb";
+  const sqlGet = `
+   SELECT 
+  a.email AS "useremail",
+  a.organizationname AS "organizationname",
+  b.patentid,
+  b.patentdescription,
+  b.patentnumber,
+  b.inventors,
+  b.patentvaluechain,
+  b.patenttechnology,
+  b.patentrelatedterms
+  FROM 
+    registration a
+  JOIN 
+    patentdb b 
+  ON 
+    a.regid = b.regid`;
+
   db.query(sqlGet, (error, result) => {
     if (error) {
       console.error("Error fetching data:", error);
@@ -255,7 +298,24 @@ app.post("/research-api/patent", (req, res) => {
 
 //////////////////valuechain db////////////////////
 app.get("/research-api/vcbot", (req, res) => {
-  const sqlGet = "SELECT * FROM valuechaindb";
+  const sqlGet = `
+   SELECT 
+  a.email AS "useremail",
+  a.organizationname AS "organizationname",
+  b.valuechainid,
+  b.valuechaindescription,
+  b.valuechain,
+  b.subvaluechain,
+  b.valuechaintechnology,
+  b.valuechainsubtechnology,
+  b.valuechainrelatedterms
+  FROM 
+    registration a
+  JOIN 
+    valuechaindb b 
+  ON 
+    a.regid = b.regid`;
+
   db.query(sqlGet, (error, result) => {
     if (error) {
       console.error("Error fetching data:", error);
@@ -304,7 +364,30 @@ app.post("/research-api/valuechain", (req, res) => {
 
 //////////////////////sdg project db//////////////////
 app.get("/research-api/sdgbot", (req, res) => {
-  const sqlGet = "SELECT * FROM sdgdb";
+  const sqlGet = `
+   SELECT 
+  a.email AS "useremail",
+  a.organizationname AS "organizationname",
+  b.sdgid,
+  b.sdgdescription,
+  b.sdgtitle,
+  b.sdgproblem,
+  b.sdgsolution,
+  b.sdgframework,
+  b.sdgbenificiaries,
+  b.sdgstakeholder,
+  b.sdgsoftware,
+  b.sdgalignment,
+  b.sdgschedule,
+  b.sdgimpact,
+  b.sdgtechnologies,
+  b.sdgsteam
+  FROM 
+    registration a
+  JOIN 
+    sdgdb b 
+  ON 
+    a.regid = b.regid`;
   db.query(sqlGet, (error, result) => {
     if (error) {
       console.error("Error fetching data:", error);
@@ -656,6 +739,134 @@ app.put('/research-api/startupdb/:startupid', async (req, res) => {
   } catch (error) {
     console.error('Error updating startup:', error);
     res.status(500).json({ error: 'Failed to update startup' });
+  }
+});
+/////////////////////////admin patent///////////
+// Backend - Express Routes
+app.delete('/research-api/patentdb/:patentid', async (req, res) => {
+  const { patentid } = req.params;
+  try {
+    const query = 'DELETE FROM patentdb WHERE patentid = $1';
+    await db.query(query, [patentid]);
+    res.status(200).json({ message: 'Patent deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting patent:', error);
+    res.status(500).json({ error: 'Failed to delete patent' });
+  }
+});
+
+app.put('/research-api/patentdb/:patentid', async (req, res) => {
+  const { patentid } = req.params;
+  const {
+    patentnumber, inventors, patentvaluechain, patenttechnology,
+    patentrelatedterms, patentdescription, regid
+  } = req.body;
+
+  try {
+    const query = `
+      UPDATE patentdb
+      SET 
+        patentnumber = $1, inventors = $2, patentvaluechain = $3, patenttechnology = $4,
+        patentrelatedterms = $5, patentdescription = $6, regid = $7
+      WHERE patentid = $8`;
+
+    await db.query(query, [
+      patentnumber, inventors, patentvaluechain, patenttechnology,
+      patentrelatedterms, patentdescription, regid, patentid
+    ]);
+
+    res.status(200).json({ message: 'Patent updated successfully' });
+  } catch (error) {
+    console.error('Error updating patent:', error);
+    res.status(500).json({ error: 'Failed to update patent' });
+  }
+});
+
+
+/////////////////////admin valuechain/////////////////
+// Backend - Express Routes
+app.delete('/research-api/valuechaindb/:valuechainid', async (req, res) => {
+  const { valuechainid } = req.params;
+  try {
+    const query = 'DELETE FROM valuechaindb WHERE valuechainid = $1';
+    await db.query(query, [valuechainid]);
+    res.status(200).json({ message: 'Value Chain deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting Value Chain:', error);
+    res.status(500).json({ error: 'Failed to delete Value Chain' });
+  }
+});
+
+app.put('/research-api/valuechaindb/:valuechainid', async (req, res) => {
+  const { valuechainid } = req.params;
+  const {
+    valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology,
+    valuechainrelatedterms, valuechaindescription
+  } = req.body;
+
+  try {
+    const query = `
+      UPDATE valuechaindb
+      SET 
+        valuechain = $1, subvaluechain = $2, valuechaintechnology = $3, valuechainsubtechnology = $4,
+        valuechainrelatedterms = $5, valuechaindescription = $6
+      WHERE valuechainid = $7`;
+
+    await db.query(query, [
+      valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology,
+      valuechainrelatedterms, valuechaindescription, valuechainid
+    ]);
+
+    res.status(200).json({ message: 'Value Chain updated successfully' });
+  } catch (error) {
+    console.error('Error updating Value Chain:', error);
+    res.status(500).json({ error: 'Failed to update Value Chain' });
+  }
+});
+
+//////////////////////admin sdg/////////////////
+app.delete('/research-api/sdgdb/:sdgid', async (req, res) => {
+  const { sdgid } = req.params;
+  try {
+    const query = 'DELETE FROM sdgdb WHERE sdgid = $1';
+    await db.query(query, [sdgid]);
+    res.status(200).json({ message: 'SDG deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting SDG:', error);
+    res.status(500).json({ error: 'Failed to delete SDG' });
+  }
+});
+
+app.put('/research-api/sdgdb/:sdgid', async (req, res) => {
+  const { sdgid } = req.params;
+  const {
+    sdgdescription, sdgtitle, sdgproblem, sdgsolution,
+    sdgframework, sdgbenificiaries, sdgstakeholder, sdgsoftware,
+    sdgalignment, sdgschedule, sdgimpact, sdgtechnologies,
+    sdgsteam
+  } = req.body;
+
+  try {
+    const query = `
+      UPDATE sdgdb
+      SET 
+        sdgdescription = $1, sdgtitle = $2, sdgproblem = $3, sdgsolution = $4,
+        sdgframework = $5, sdgbenificiaries = $6, sdgstakeholder = $7, sdgsoftware = $8,
+        sdgalignment = $9, sdgschedule = $10, sdgimpact = $11, sdgtechnologies = $12,
+        sdgsteam = $13
+      WHERE sdgid = $14`;
+
+    await db.query(query, [
+      sdgdescription, sdgtitle, sdgproblem, sdgsolution,
+      sdgframework, sdgbenificiaries, sdgstakeholder, sdgsoftware,
+      sdgalignment, sdgschedule, sdgimpact, sdgtechnologies,
+      sdgsteam, sdgid
+    ]);
+
+    res.status(200).json({ message: 'SDG updated successfully' });
+  } catch (error) {
+    console.error('Error updating SDG:', error);
+    res.status(500).json({ error: 'Failed to update SDG' });
   }
 });
 

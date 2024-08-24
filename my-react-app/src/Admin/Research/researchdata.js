@@ -126,9 +126,7 @@ function ViewResearch() {
     yPosition = addHeading(`Sample Dataset:`, 10, yPosition);
     yPosition = checkAndAddPage(yPosition);
     yPosition += addText(item.dataset, 10, yPosition);
-    yPosition = checkAndAddPage(yPosition + lineHeight);
-
-    
+    yPosition = checkAndAddPage(yPosition + lineHeight); 
 
     yPosition = addHeading(`Statistical Testing:`, 10, yPosition);
     yPosition = checkAndAddPage(yPosition);
@@ -210,7 +208,7 @@ function ViewResearch() {
                       onClick={() => handleImport(item)} 
                       className="ml-2 text-blue-500 hover:text-blue-700"
                     >
-                      <FaDownload /> {/* Download icon */}
+                      <FaDownload />
                     </button>
                   </td>
                 </tr>

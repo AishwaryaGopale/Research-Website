@@ -1,17 +1,16 @@
-// DeleteResearch.js
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function DeletePatent({ itemId, onDeleteSuccess }) {
+function DeleteValueChain({ itemId, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/research-api/vcbot/${itemId}`);
-      toast.success('Patent deleted successfully');
+      await axios.delete(`http://localhost:5002/research-api/valuechaindb/${itemId}`);
+      toast.success('Value Chain deleted successfully');
       onDeleteSuccess(); // Refresh the list after successful delete
     } catch (error) {
-      console.error('Error deleting vc:', error);
-      toast.error('Failed to delete vc');
+      console.error('Error deleting Value Chain:', error);
+      toast.error('Failed to delete Value Chain');
     }
   };
 
@@ -25,4 +24,4 @@ function DeletePatent({ itemId, onDeleteSuccess }) {
   );
 }
 
-export default DeletePatent;
+export default DeleteValueChain;

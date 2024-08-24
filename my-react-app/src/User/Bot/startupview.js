@@ -26,6 +26,8 @@ function Viewstartupbot() {
   <thead className="bg-gray-800 text-white">
     <tr>
     <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Sr no</th>
+    <th className="px-6 py-3 text-left text-sm font-semibold w-1/12">User Email</th>
+    <th className="px-6 py-3 text-left text-sm font-semibold w-1/12">organization name</th>
       <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Description</th>
       <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Title</th>
       <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Problems</th>
@@ -48,6 +50,12 @@ function Viewstartupbot() {
       bot.map((item, index) => (
         <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-100">
           <td className="px-6 py-4 w-1/9 align-top">{index + 1}</td>
+          <td className="px-6 py-4 w-1/12 align-top">
+          <p className="leading-relaxed whitespace-normal">{item.useremail}</p>
+           </td>
+           <td className="px-6 py-4 w-1/12 align-top">
+            <p className="leading-relaxed whitespace-normal">{item.organizationname}</p>
+            </td>
           <td className="px-6 py-4 w-1/9 align-top">
             <p className="leading-relaxed whitespace-normal">{item.startupdescription}</p>
           </td>

@@ -55,6 +55,16 @@ function Viewstartup() {
       return y;
     };
 
+    yPosition = addHeading(`Organization name:`, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition);
+    yPosition += addText(item.organizationname, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition + lineHeight);
+
+    yPosition = addHeading(`User name:`, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition);
+    yPosition += addText(item.useremail, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition + lineHeight);
+
     yPosition = addHeading(`Title:`, 10, yPosition);
     yPosition = checkAndAddPage(yPosition);
     yPosition += addText(item.startuptitle, 10, yPosition);
@@ -141,6 +151,8 @@ function Viewstartup() {
           <thead className="bg-gray-800 text-white">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Sr no</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold w-1/12">User Email</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold w-1/12">organization name</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Description</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Title</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Problems</th>
@@ -162,48 +174,58 @@ function Viewstartup() {
           <tbody className="text-gray-700">
             {bot.length > 0 ? (
                 bot.map((item, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="px-6 py-4 text-sm font-medium">{index + 1}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupdescription}</td>
-                    <td className="px-6 py-4 text-sm">{item.startuptitle}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupproblem}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupsolution}</td>
-                    <td className="px-6 py-4 text-sm">{item.startuparchitect}</td>
-                    <td className="px-6 py-4 text-sm">{item.startuptool}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupschedule}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupcanvamodel}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupmarketarea}</td>
-                    <td className="px-6 py-4 text-sm">{item.startuprevenuemodel}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupreport}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupimpact}</td>
-                    <td className="px-6 py-4 text-sm">{item.startuptechnologies}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupsteam}</td>
-                    <td className="px-6 py-4 text-sm">{item.startupvision}</td>
-                    <td className="px-6 py-4 text-sm flex space-x-2">
-                      <EditStartup item={item} refreshList={refreshList} />
-                      <DeleteStartup item={item} refreshList={refreshList} />
-                      <button 
-                        onClick={() => handleImport(item)} 
-                        className="text-blue-500 hover:text-blue-700"
-                      >
-                        <FaDownload />
-                      </button>
+                  <tr key={item.startupid} className="border-b border-gray-300 hover:bg-gray-100">
+                    <td className="px-6 py-4 w-1/9 align-top">{index + 1}</td>
+                    <td className="px-6 py-4 w-1/12 align-top">
+                    <p className="leading-relaxed whitespace-normal">{item.useremail}</p>
+                  </td>
+                  <td className="px-6 py-4 w-1/12 align-top">
+                    <p className="leading-relaxed whitespace-normal">{item.organizationname}</p>
+                  </td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupdescription}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startuptitle}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupproblem}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupsolution}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startuparchitect}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startuptool}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupschedule}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupcanvamodel}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupmarketarea}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startuprevenuemodel}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupreport}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupimpact}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startuptechnologies}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupsteam}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">{item.startupvision}</td>
+                    <td className="px-6 py-4 w-1/9 align-top">
+                      <div className="block">
+                        <div className="mb-2">
+                          <EditStartup startup={item} onEdit={refreshList} />
+                        </div>
+                        <div className="mb-2">
+                          <DeleteStartup itemId={item.startupid} onDeleteSuccess={refreshList} />
+                        </div>
+                        <div className="ml-2 text-blue-500 hover:text-blue-700">
+                          <button onClick={() => handleImport(item)}>
+                            <FaDownload />
+                          </button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 ))
-              ) : (
-                <tr>
-                  <td colSpan="17" className="px-6 py-4 text-sm text-center text-gray-500">
-                    No data available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            ) : (
+              <tr>
+                <td colSpan="17" className="px-6 py-4 text-center">
+                  No data available
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
-    );
-  }
-  
-  export default Viewstartup;
-  
+    </div>
+  );
+}
+
+export default Viewstartup;

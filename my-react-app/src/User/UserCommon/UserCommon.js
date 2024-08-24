@@ -74,14 +74,14 @@ const User = () => {
                     </div>
                   </div>
                   <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSdhZfGOe0VGOKRE2Hsyo52ff-IcO2NA12SFypHNiEXcau1vaQ/viewform?usp=sharing"
+                    href="https://forms.gle/2SLTSDHSadLDk2Ak7"
                     className="mr-6 bg-[#f7f7f7] border border-black rounded-[20px] pl-[15px] pr-[15px]"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Contact Us
                   </a>
-                  {/* <Link
+                  <Link
                     to="register"
                     className="mr-6 bg-[#f7f7f7] border border-black rounded-[20px] pl-[15px] pr-[15px]"
                   >
@@ -92,7 +92,7 @@ const User = () => {
                     className="mr-6 bg-[#f7f7f7] border border-black rounded-[20px] pl-[15px] pr-[15px]"
                   >
                     Login
-                  </Link> */}
+                  </Link>
                 </div>
               </div>
               <div className="flex items-center gap-4">

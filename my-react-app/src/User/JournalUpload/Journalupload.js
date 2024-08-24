@@ -11,7 +11,7 @@ function JournalUpload() {
     year: '',
     volume: '',
     issn: '',
-    link:'',
+    link: 'https://drive.google.com/drive/folders/1MIgVkTVNg-F4QfcFvzIrDo6utn2VIBro?usp=sharing', // Default link
     journalFile: null,
   });
 
@@ -58,7 +58,7 @@ function JournalUpload() {
         year: '',
         volume: '',
         issn: '',
-        link: '',
+        link: 'https://drive.google.com/drive/folders/1MIgVkTVNg-F4QfcFvzIrDo6utn2VIBro?usp=sharing', 
         journalFile: null,
       });
       setUploadedFileName('');
@@ -69,7 +69,6 @@ function JournalUpload() {
       toast.error(errorMessage);
     }
   };
-  
 
   return (
     <div className="container mx-auto px-4">
