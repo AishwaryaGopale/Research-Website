@@ -130,7 +130,7 @@ function Chatbot() {
    const [sdgtechloading, setsdgtechloading] = useState(false);
    const [sdgsteamloading, setsdgsteamloading] = useState(false);
    const [casestudyloading, setcasestudyloading] = useState(false);
-
+   const userId = localStorage.getItem("id");
   console.log("Selected Research Title",selectedResearchTitle)
   useEffect(() => {
     // Scroll to the bottom of the message container when messages change
@@ -777,6 +777,7 @@ const handleSubmit = async () => {
     inferences: researchInferences,
     conclusion: researchConclusion,
     researchsteam: researchSTEAM,
+    regid:userId,
   };
   try {
     const response = await axios.post("http://localhost:5002/research-api/research", payload);
@@ -824,6 +825,7 @@ const handleStartupSubmit = async () => {
     startuptechnologies:startuprecomtechnologies,
     startupsteam:startupSTEAM,
     startupvision:startupvision,
+    regid:userId,
   };
   try {
     const response = await axios.post("http://localhost:5002/research-api/startup", payload);
@@ -861,6 +863,7 @@ const handlepatentSubmit = async () => {
     patentvaluechain: petentvaluechain, 
     patenttechnology: petenttechnology, 
     patentrelatedterms: petentterms, 
+    regid:userId,
   };
   try {
     const response = await axios.post("http://localhost:5002/research-api/patent", payload);
@@ -888,6 +891,7 @@ const handlevaluechainSubmit = async () => {
     valuechaintechnology:technology,
     valuechainsubtechnology:subtechnology,
     valuechainrelatedterm:valuechainterms,
+    regid:userId,
   };
   try {
     const response = await axios.post("http://localhost:5002/research-api/valuechain", payload);
@@ -922,6 +926,7 @@ const handlesdgSubmit = async () => {
     sdgimpact:sdgimpact,
     sdgtechnologies:sdgrectechnologies,
     sdgsteam:sdgSTEAM,
+    regid:userId,
   };
   try {
     const response = await axios.post("http://localhost:5002/research-api/sdg", payload);

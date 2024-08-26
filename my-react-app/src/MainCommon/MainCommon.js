@@ -49,14 +49,15 @@ const MainCommon = () => {
       <Router>
         <Routes>
           {/* Default route to login */}
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<User/>} >
+          <Route path="" element={<HomePage />} /></Route>
           
           {/* Public routes */}
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegistrationPage />} />
 
           {/* Protected user routes */}
-          <Route path="user" element={<PrivateRoute><User /></PrivateRoute>}>
+          <Route path="user" element={<User />}>
             <Route path="" element={<HomePage />} />
             <Route path="about" element={<About />} />
             <Route path="community" element={<Community />} />

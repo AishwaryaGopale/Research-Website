@@ -78,7 +78,7 @@ ON
   });
 });
 
-app.post("/research-api/research", (req, res) => {
+app.post("/research-api/research", async (req, res) => {
   const {
     resdescription,
     industry,
@@ -96,18 +96,45 @@ app.post("/research-api/research", (req, res) => {
     inferences,
     conclusion,
     researchsteam,
+    regid,
   } = req.body;
+
+  // Log the incoming data
+  console.log('Received data:', {
+    resdescription,
+    industry,
+    themes,
+    researchtitle,
+    objectives,
+    introduction,
+    abstraction,
+    bibliography,
+    methodology,
+    hypothesis,
+    likertscale,
+    dataset,
+    stattesting,
+    inferences,
+    conclusion,
+    researchsteam,
+    regid,
+  });
+
+  // Validate data types
+  if (isNaN(parseInt(regid))) {
+    return res.status(400).json({ error: "Invalid regid value" });
+  }
 
   const sqlInsert = `
     INSERT INTO researchbuttondb (
-      resdescription,industry,themes, researchtitle, objectives, introduction, abstraction, bibliography, methodology, hypothesis, likertscale, dataset, stattesting, inferences, conclusion, researchsteam
+      resdescription, industry, themes, researchtitle, objectives, introduction, abstraction, bibliography, methodology, hypothesis, likertscale, dataset, stattesting, inferences, conclusion, researchsteam, regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,$14,$15,$16
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
     ) RETURNING researchid;
   `;
-  db.query(
-    sqlInsert,
-    [
+
+  try {
+    const result = await db.query(sqlInsert, [
       resdescription,
       industry,
       themes,
@@ -124,16 +151,15 @@ app.post("/research-api/research", (req, res) => {
       inferences,
       conclusion,
       researchsteam,
-    ],
-    (error, result) => {
-      if (error) {
-        console.error("Error inserting data:", error);
-        return res.status(500).json({ error: "Internal server error" });
-      }
-      res.json(result.rows[0]);
-    }
-  );
+      regid,
+    ]);
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error inserting data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
 
 /////////startup idea db////////
 app.get("/research-api/startupbot", (req, res) => {
@@ -191,13 +217,14 @@ app.post("/research-api/startup", (req, res) => {
     startuptechnologies,
     startupsteam,
     startupvision,
+    regid,
   } = req.body;
 
   const sqlInsert = `
     INSERT INTO startupdb (
-      startupdescription, startuptitle, startupproblem, startupsolution, startuparchitect, startuptool, startupschedule, startupcanvamodel, startupmarketarea, startuprevenuemodel, startupreport, startupimpact, startuptechnologies, startupsteam, startupvision
+      startupdescription, startuptitle, startupproblem, startupsolution, startuparchitect, startuptool, startupschedule, startupcanvamodel, startupmarketarea, startuprevenuemodel, startupreport, startupimpact, startuptechnologies, startupsteam, startupvision, regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
     ) RETURNING startupid;
   `;
 
@@ -219,6 +246,7 @@ app.post("/research-api/startup", (req, res) => {
       startuptechnologies,
       startupsteam,
       startupvision,
+      regid,
     ],
     (error, result) => {
       if (error) {
@@ -267,13 +295,14 @@ app.post("/research-api/patent", (req, res) => {
     patentvaluechain,
     patenttechnology,
     patentrelatedterms,
+    regid,
   } = req.body;
   
   const sqlInsert = `
     INSERT INTO patentdb (
-      patentdescription, patentnumber, inventors, patentvaluechain, patenttechnology, patentrelatedterms
+      patentdescription, patentnumber, inventors, patentvaluechain, patenttechnology, patentrelatedterms, regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6
+      $1, $2, $3, $4, $5, $6, $7
     ) RETURNING patentid;
   `;
   db.query(
@@ -285,6 +314,7 @@ app.post("/research-api/patent", (req, res) => {
       patentvaluechain,
       patenttechnology,
       patentrelatedterms,
+      regid,
     ],
     (error, result) => {
       if (error) {
@@ -333,13 +363,14 @@ app.post("/research-api/valuechain", (req, res) => {
     valuechaintechnology,
     valuechainsubtechnology,
     valuechainrelatedterms,
+    regid,
   } = req.body;
 
   const sqlInsert = `
     INSERT INTO valuechaindb (
-      valuechaindescription, valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology, valuechainrelatedterms
+      valuechaindescription, valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology, valuechainrelatedterms, regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6
+      $1, $2, $3, $4, $5, $6, $7
     ) RETURNING valuechainid;
   `;
   db.query(
@@ -351,6 +382,7 @@ app.post("/research-api/valuechain", (req, res) => {
       valuechaintechnology,
       valuechainsubtechnology,
       valuechainrelatedterms,
+      regid,
     ],
     (error, result) => {
       if (error) {
@@ -412,13 +444,14 @@ app.post("/research-api/sdg", (req, res) => {
     sdgimpact,
     sdgtechnologies,
     sdgsteam,
+    regid,
   } = req.body;
 
   const sqlInsert = `
     INSERT INTO sdgdb (
-      sdgdescription, sdgtitle, sdgproblem, sdgsolution, sdgframework, sdgbenificiaries,sdgstakeholder,sdgsoftware,sdgalignment,sdgschedule,sdgimpact,sdgtechnologies,sdgsteam
+      sdgdescription, sdgtitle, sdgproblem, sdgsolution, sdgframework, sdgbenificiaries,sdgstakeholder,sdgsoftware,sdgalignment,sdgschedule,sdgimpact,sdgtechnologies,sdgsteam,regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6,$7, $8, $9, $10, $11, $12, $13
+      $1, $2, $3, $4, $5, $6,$7, $8, $9, $10, $11, $12, $13, $14
     ) RETURNING sdgid;
   `;
   db.query(
@@ -437,6 +470,7 @@ app.post("/research-api/sdg", (req, res) => {
       sdgimpact,
       sdgtechnologies,
       sdgsteam,  
+      regid,
     ],
     (error, result) => {
       if (error) {

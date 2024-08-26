@@ -1,21 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Import the logout icon
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import logo from './Images/passionit.png';
 import { Link } from "react-router-dom";
 import Chatbot from "../Bot/Boat";
+import {jwtDecode} from 'jwt-decode'; 
 
 const User = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState('');
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const decodeToken = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decoded = jwtDecode(token);
+                const userId = parseInt(decoded.id, 10);
+                setUserId(userId);
+                localStorage.setItem('id', userId);
+
+                console.log('Decoded token:', decoded);
+                console.log('User ID:', userId);
+            }
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    };
+
+    if (isLoggedIn) {
+        decodeToken();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    // Check if token exists in local storage
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // Convert token to boolean
+  }, []);
 
   const handleLogout = () => {
     // Remove token from local storage
     localStorage.removeItem("token");
+    setIsLoggedIn(false); // Update state to reflect logged-out status
+    localStorage.removeItem("id"); // Remove user ID as well
     // Redirect to login page
-    navigate("/login");
+    navigate("/user");
   };
 
   return (
@@ -82,13 +117,13 @@ const User = () => {
                     Contact Us
                   </a>
                   <Link
-                    to="register"
+                    to="/register"
                     className="mr-6 bg-[#f7f7f7] border border-black rounded-[20px] pl-[15px] pr-[15px]"
                   >
                     Register
                   </Link>
                   <Link
-                    to="login"
+                    to="/login"
                     className="mr-6 bg-[#f7f7f7] border border-black rounded-[20px] pl-[15px] pr-[15px]"
                   >
                     Login
@@ -101,19 +136,21 @@ const User = () => {
                     <Bars3Icon className="h-6" />
                   </button>
                 </div>
-                {/* Logout Button */}
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center text-white hover:text-gray-300 focus:outline-none lg:flex"
-                >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                  Logout
-                </button>
+                {/* Conditionally render Logout Button */}
+                {isLoggedIn && (
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center text-white hover:text-gray-300 focus:outline-none lg:flex"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+                    Logout
+                  </button>
+                )}
               </div>
             </div>
           </div>
           <div
-            className={`fixed z-40 w-full  bg-gray-100 overflow-hidden flex flex-col lg:hidden gap-12  origin-top duration-700 ${
+            className={`fixed z-40 w-full bg-gray-100 overflow-hidden flex flex-col lg:hidden gap-12 origin-top duration-700 ${
               !toggleMenu ? "h-0" : "h-full"
             }`}
           >
@@ -136,10 +173,12 @@ const User = () => {
       <div>
         <Outlet />
       </div>
-      {/* Chatbot container with position fixed */}
-      <div className="fixed bottom-4 right-4">
-        <Chatbot />
-      </div>
+      {/* Show Chatbot only when logged in */}
+      {isLoggedIn && (
+        <div className="fixed bottom-4 right-4">
+          <Chatbot userid={userId}/>
+        </div>
+      )}
     </>
   );
 };

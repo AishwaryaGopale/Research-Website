@@ -7,7 +7,7 @@ function HomePage() {
   const [currentImage, setCurrentImage] = useState(homeImage);
   const [nextImage, setNextImage] = useState(homeImage2);
   const [isSliding, setIsSliding] = useState(false);
-
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsSliding(true);

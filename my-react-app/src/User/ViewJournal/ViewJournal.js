@@ -25,7 +25,6 @@ function ViewJournal() {
         <table className="min-w-full bg-white border-gray-300 shadow-md rounded-md">
           <thead className="bg-gray-800 text-white">
             <tr>
-            
               <th className="px-6 py-3 text-left text-sm font-semibold">Category</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Themes</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Publisher Name</th>
@@ -34,13 +33,14 @@ function ViewJournal() {
               <th className="px-6 py-3 text-left text-sm font-semibold">Volume</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">ISSN</th>
               <th className="px-6 py-3 text-left text-sm font-semibold">Journal Link</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">journalFile</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {journals.map((journal) => (
-              <tr key={journal.id} className="border-b border-gray-300 hover:bg-gray-100">
-               
+            {journals.map((journal, index) => (
+              <tr
+                key={journal.id}
+                className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
+              >
                 <td className="px-6 py-4">{journal.category}</td>
                 <td className="px-6 py-4">{journal.themes}</td>
                 <td className="px-6 py-4">{journal.publishername}</td>
@@ -48,10 +48,9 @@ function ViewJournal() {
                 <td className="px-6 py-4">{journal.year}</td>
                 <td className="px-6 py-4">{journal.volume}</td>
                 <td className="px-6 py-4">{journal.issn}</td>
-                <td className="px-6 py-4">{journal.link}</td>
                 <td className="px-6 py-4">
-                  <a href={journal.fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline cursor-auto mr-2">
-                    View
+                  <a href={journal.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                    View File
                   </a>
                 </td>
               </tr>

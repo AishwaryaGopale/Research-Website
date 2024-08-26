@@ -58,7 +58,7 @@ function JournalUpload() {
         year: '',
         volume: '',
         issn: '',
-        link: 'https://drive.google.com/drive/folders/1MIgVkTVNg-F4QfcFvzIrDo6utn2VIBro?usp=sharing', 
+        link: '', 
         journalFile: null,
       });
       setUploadedFileName('');
@@ -167,8 +167,16 @@ function JournalUpload() {
                 name="link"
                 value={formState.link}
                 onChange={handleInputChange}
-                className="border border-gray-800 rounded px-3 py-2"
+                className="border border-gray-800 rounded px-3 py-2 mb-2"
               />
+              <a 
+                href={formState.link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-500 hover:underline"
+              >
+                Open Link
+              </a>
             </div>
 
             <div className="col-span-2 flex items-center">
