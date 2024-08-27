@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function ViewBook() {
   const [books, setBooks] = useState([]);
@@ -8,7 +9,7 @@ function ViewBook() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/research-api/books');
+        const response = await axios.get(API.GET_BOOK_API);
         setBooks(response.data);
       } catch (error) {
         console.error('Error fetching books:', error);

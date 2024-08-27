@@ -5,13 +5,14 @@ import jsPDF from 'jspdf';
 import EditResearch from '../Research/editresearch'; 
 import DeleteResearch from '../Research/deleteresearch'; 
 import { FaDownload } from 'react-icons/fa'; 
+import * as API from '../../User/Endpoints/Endpoints'
 
 function ViewResearch() {
   const [bot, setChatbots] = useState([]);
 
   const fetchbot = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/research-api/researchbot');
+      const response = await axios.get(API.GET_RESEARCH_API);
       setChatbots(response.data);
     } catch (error) {
       console.error('Error fetching chatbots:', error);

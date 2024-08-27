@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function JournalUpload() {
   const [formState, setFormState] = useState({
@@ -43,7 +44,7 @@ function JournalUpload() {
     formData.append('journalFile', formState.journalFile);
   
     try {
-      await axios.post('http://localhost:5002/research-api/createjournal', formData, {
+      await axios.post(API.POST_JOURNAL_API, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

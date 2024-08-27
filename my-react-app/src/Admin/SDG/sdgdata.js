@@ -5,13 +5,14 @@ import jsPDF from 'jspdf';
 import EditSDG from '../SDG/editsdg'; 
 import DeleteSDG from '../SDG/deletesdg'; 
 import { FaDownload } from 'react-icons/fa'; 
+import * as API from "../../User/Endpoints/Endpoints"
 
 function ViewSDG() {
   const [bot, setChatbots] = useState([]);
 
   const fetchbot = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/research-api/sdgbot');
+      const response = await axios.get(API.GET_SDG_API);
       setChatbots(response.data);
     } catch (error) {
       console.error('Error fetching chatbots:', error);

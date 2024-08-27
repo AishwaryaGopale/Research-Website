@@ -21,7 +21,6 @@ import AdminCommon from "../Admin/AdminCommon/AdminCommon";
 import Dashboard from "../Admin/Dashboard/Dashboard";
 import Table from "../Admin/JournalUpload/JournalTable/Table";
 import ViewResearch from "../Admin/Research/researchdata";
-import * as API from "../User/Endpoints/endpoints";
 import EditResearch from "../Admin/Research/editresearch";
 import DeleteResearch from "../Admin/Research/deleteresearch";
 import Viewstartup from "../Admin/Startup/startupdata";
@@ -73,7 +72,6 @@ const MainCommon = () => {
             <Route path="Vcview" element={<ViewVcbot />} />
             <Route path="SDGview" element={<Viewsdgbot />} />
 
-            <Route path="enpoints" element={< API />} />
             <Route path="*" element={
               <div>
                 <h1>404 - Page Not Found</h1>

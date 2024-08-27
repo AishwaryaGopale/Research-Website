@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function ViewChatbot() {
   const [bot, setChatbots] = useState([]);
@@ -9,7 +10,7 @@ function ViewChatbot() {
   useEffect(() => {
     const fetchbot = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/research-api/researchbot');
+        const response = await axios.get(API.GET_RESEARCH_API);
         console.log(response.data);  // Log the response to check the structure
         setChatbots(response.data);
       } catch (error) {

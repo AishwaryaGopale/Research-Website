@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function BookUpload() {
   const [formState, setFormState] = useState({
@@ -40,7 +41,7 @@ function BookUpload() {
     formData.append('bookFile', formState.bookFile); // corrected key from journalFile to bookFile
 
     try {
-      await axios.post('http://localhost:5002/research-api/createbook', formData, {
+      await axios.post(API.POST_BOOK_API, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

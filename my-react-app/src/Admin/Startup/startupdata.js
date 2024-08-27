@@ -4,14 +4,15 @@ import { toast } from 'react-toastify';
 import jsPDF from 'jspdf';
 import EditStartup from '../Startup/editstartup'; 
 import DeleteStartup from '../Startup/deletestartup'; 
-import { FaDownload } from 'react-icons/fa'; 
+import { FaDownload } from 'react-icons/fa';
+import * as API from "../../User/Endpoints/Endpoints" 
 
 function Viewstartup() {
   const [bot, setChatbots] = useState([]);
 
   const fetchbot = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/research-api/startupbot');
+      const response = await axios.get(API.GET_STARTUP_API);
       setChatbots(response.data);
     } catch (error) {
       console.error('Error fetching chatbots:', error);

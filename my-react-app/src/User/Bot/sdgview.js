@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function Viewsdgbot() {
   const [bot, setChatbots] = useState([]);
@@ -8,7 +9,7 @@ function Viewsdgbot() {
   useEffect(() => {
     const fetchbot = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/research-api/sdgbot');
+        const response = await axios.get(API.GET_SDG_API);
         setChatbots(response.data);
       } catch (error) {
         console.error('Error fetching chatbots:', error);

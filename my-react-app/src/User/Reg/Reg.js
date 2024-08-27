@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from './loginimg.png';
+import * as API from "../Endpoints/Endpoints"
 
   const RegistrationPage = () => {
   const [membername, setmembername] = useState("");
@@ -17,7 +18,7 @@ import loginImg from './loginimg.png';
       return;
     }
     try {
-      const response = await fetch("http://localhost:5002/research-api/register", {
+      const response = await fetch(API.REGISTER_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ membername, email, organizationname, password }),

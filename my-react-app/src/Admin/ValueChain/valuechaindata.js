@@ -5,13 +5,14 @@ import jsPDF from 'jspdf';
 import EditVc from '../ValueChain/editvc';
 import DeleteVc from '../ValueChain/deletevc';
 import { FaDownload } from 'react-icons/fa';
+import * as API from "../../User/Endpoints/Endpoints"
 
 function ViewVc() {
   const [bot, setChatbots] = useState([]);
 
   const fetchbot = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/research-api/vcbot');
+      const response = await axios.get(API.GET_VALUECHAIN_API);
       setChatbots(response.data);
     } catch (error) {
       console.error('Error fetching chatbots:', error);

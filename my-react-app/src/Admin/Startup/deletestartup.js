@@ -2,11 +2,12 @@
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../../User/Endpoints/Endpoints"
 
 function DeleteStartup({ itemId, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/research-api/startupdb/${itemId}`);
+      await axios.delete(API.DELETE_STARTUP_API(itemId));
       toast.success('startup deleted successfully');
       onDeleteSuccess(); 
     } catch (error) {

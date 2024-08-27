@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../../User/Endpoints/Endpoints"
 
 function EditSDG({ item, onEditSuccess }) {
   const [formData, setFormData] = useState(item);
@@ -16,7 +17,7 @@ function EditSDG({ item, onEditSuccess }) {
 
   const handleEdit = async () => {
     try {
-      await axios.put(`http://localhost:5002/research-api/sdgbot/${item.sdgid}`, formData);
+      await axios.put(API.UPDATE_SDG_API(item), formData);
       toast.success('SDG updated successfully');
       onEditSuccess(); 
     } catch (error) {

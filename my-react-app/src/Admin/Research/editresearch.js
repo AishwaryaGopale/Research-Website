@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../../User/Endpoints/Endpoints"
 
 function EditResearch({ item, onEditSuccess }) {
   const [formData, setFormData] = useState(item);
@@ -16,7 +17,7 @@ function EditResearch({ item, onEditSuccess }) {
 
   const handleEdit = async () => {
     try {
-      await axios.put(`http://localhost:5002/research-api/researchbot/${item.researchid}`, formData);
+      await axios.put(API.UPDATE_RESEARCH_API(item), formData);
       toast.success('Research updated successfully');
       onEditSuccess(); // Refresh the list after successful edit
     } catch (error) {

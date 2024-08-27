@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../Endpoints/Endpoints"
 
 function ViewJournal() {
   const [journals, setJournals] = useState([]);
@@ -8,7 +9,7 @@ function ViewJournal() {
   useEffect(() => {
     const fetchJournals = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/research-api/journals');
+        const response = await axios.get(API.GET_JOURNAL_API);
         setJournals(response.data);
       } catch (error) {
         console.error('Error fetching journals:', error);

@@ -4,6 +4,7 @@ import { SiGooglemessages } from "react-icons/si";
 import { GoSync } from "react-icons/go";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import * as API from "../Endpoints/Endpoints"
 
 function Chatbot() {
   const [showPopup, setShowPopup] = useState(false);
@@ -780,7 +781,7 @@ const handleSubmit = async () => {
     regid:userId,
   };
   try {
-    const response = await axios.post("http://localhost:5002/research-api/research", payload);
+    const response = await axios.post(API.POST_RESEARCH_API, payload);
     console.log('Data submitted successfully:', response.data);
     setSuccessMessage('Data submitted successfully!');
     setDescription('');
@@ -828,7 +829,7 @@ const handleStartupSubmit = async () => {
     regid:userId,
   };
   try {
-    const response = await axios.post("http://localhost:5002/research-api/startup", payload);
+    const response = await axios.post(API.POST_STARTUP_API, payload);
     console.log('Data submitted successfully:', response.data);
     setSuccessMessage('Data submitted successfully!');
     setDescription('');
@@ -866,7 +867,7 @@ const handlepatentSubmit = async () => {
     regid:userId,
   };
   try {
-    const response = await axios.post("http://localhost:5002/research-api/patent", payload);
+    const response = await axios.post(API.POST_PATENT_API, payload);
     console.log('Data submitted successfully:', response.data);
     setSuccessMessage('Data submitted successfully!');  
     setDescription('');
@@ -894,7 +895,7 @@ const handlevaluechainSubmit = async () => {
     regid:userId,
   };
   try {
-    const response = await axios.post("http://localhost:5002/research-api/valuechain", payload);
+    const response = await axios.post(API.POST_VALUECHAIN_API, payload);
     console.log('Data submitted successfully:', response.data);
     setSuccessMessage('Data submitted successfully!');
     setDescription('');
@@ -929,7 +930,7 @@ const handlesdgSubmit = async () => {
     regid:userId,
   };
   try {
-    const response = await axios.post("http://localhost:5002/research-api/sdg", payload);
+    const response = await axios.post(API.POST_SDG_API, payload);
     console.log('Data submitted successfully:', response.data);
     setSuccessMessage('Data submitted successfully!');
     setDescription('');

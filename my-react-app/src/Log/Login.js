@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import loginImg from './loginimg.png'; // Updated import statement for the image
 import { useNavigate } from "react-router-dom";
+import * as API from "../User/Endpoints/Endpoints"
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const LoginForm = () => {
  const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch("http://localhost:5002/research-api/login", {
+    const response = await fetch(API.LOGIN_API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

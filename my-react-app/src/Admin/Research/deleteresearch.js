@@ -2,11 +2,12 @@
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as API from "../../User/Endpoints/Endpoints"
 
 function DeleteResearch({ itemId, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/research-api/researchbot/${itemId}`);
+      await axios.delete(API.DELETE_RESEARCH_API(itemId));
       toast.success('Research deleted successfully');
       onDeleteSuccess(); // Refresh the list after successful delete
     } catch (error) {
