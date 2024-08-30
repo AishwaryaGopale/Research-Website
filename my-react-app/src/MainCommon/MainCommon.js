@@ -35,6 +35,12 @@ import DeleteVc from "../Admin/ValueChain/deletevc";
 import ViewSDG from "../Admin/SDG/sdgdata";
 import EditSDG from "../Admin/SDG/editsdg";
 import DeleteSDG from "../Admin/SDG/deletesdg";
+import DeleteuserResearch from "../User/Bot/addeditresearch/deleteresearch"
+import EdituserResearch from "../User/Bot/addeditresearch/editresearch";
+import EdituserStartup from "../User/Bot/addeditstartup/editstartup"
+import DeleteuserStartup from "../User/Bot/addeditstartup/deletestartup";
+import EdituserPatent from "../User/Bot/addeditpatent/editpatent"
+import DeleteuserPatent from "../User/Bot/addeditpatent/deletepatent";
 
 
 const PrivateRoute = ({ children }) => {
@@ -67,10 +73,17 @@ const MainCommon = () => {
             <Route path="viewbook" element={<ViewBook />} />
             <Route path="bot" element={<Chatbot />} />
             <Route path="botview" element={<ViewChatbot />} />
+            <Route path="editresearch" element={<EdituserResearch />} />
+            <Route path="deleteresearch" element={<DeleteuserResearch />} />
             <Route path="startupview" element={<Viewstartupbot />} />
+            <Route path="editstartup" element={<EdituserStartup />} />
+            <Route path="deletestartup" element={<DeleteuserStartup />} />
             <Route path="Patentview" element={<Viewpatentbot />} />
+            <Route path="editpatent" element={<EdituserPatent />} />
+            <Route path="deletepatent" element={<DeleteuserPatent />} />
             <Route path="Vcview" element={<ViewVcbot />} />
             <Route path="SDGview" element={<Viewsdgbot />} />
+
 
             <Route path="*" element={
               <div>
