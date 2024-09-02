@@ -41,6 +41,10 @@ import EdituserStartup from "../User/Bot/addeditstartup/editstartup"
 import DeleteuserStartup from "../User/Bot/addeditstartup/deletestartup";
 import EdituserPatent from "../User/Bot/addeditpatent/editpatent"
 import DeleteuserPatent from "../User/Bot/addeditpatent/deletepatent";
+import DeleteuserVC from "../User/Bot/addeditvc/deletevc";
+import EdituserVC from "../User/Bot/addeditvc/editvc";
+import DeleteuserSDG from "../User/Bot/addeditsdg/deletesdg";
+import EdituserSDG from "../User/Bot/addeditsdg/editsdg";
 
 
 const PrivateRoute = ({ children }) => {
@@ -82,8 +86,11 @@ const MainCommon = () => {
             <Route path="editpatent" element={<EdituserPatent />} />
             <Route path="deletepatent" element={<DeleteuserPatent />} />
             <Route path="Vcview" element={<ViewVcbot />} />
+            <Route path="editvc" element={<EdituserVC />} />
+            <Route path="deletevc" element={<DeleteuserVC />} />
             <Route path="SDGview" element={<Viewsdgbot />} />
-
+            <Route path="editSDG" element={<EdituserSDG />} />
+            <Route path="deleteSDG" element={<DeleteuserSDG />} />
 
             <Route path="*" element={
               <div>

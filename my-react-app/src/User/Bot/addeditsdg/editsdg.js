@@ -17,7 +17,7 @@ function EdituserVC({ item, onEditSuccess }) {
 
   const handleEdit = async () => {
     try {
-      await axios.put(API.UPDATE_VC_API(item), formData);
+      await axios.put(API.UPDATE_SDG_API(item), formData);
       toast.success('VC updated successfully');
       onEditSuccess(); // Refresh the list after successful edit
     } catch (error) {

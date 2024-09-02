@@ -660,10 +660,18 @@ app.post('/research-api/login', async (req, res) => {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
 
-    // Generate a JWT token
-    const token = jwt.sign({ id: user.regid, email: user.email }, 'secretKey', { expiresIn: '1h' });
+    // Generate a JWT token with user role
+    const token = jwt.sign(
+      {
+        id: user.regid,
+        email: user.email,
+        isAdmin: user.isadmin // Include isAdmin in the JWT payload
+      },
+      'secretKey',
+      { expiresIn: '1h' }
+    );
 
-    res.send({ token });
+    res.send({ token, isAdmin: user.isadmin }); // Send isAdmin status in response
   } catch (err) {
     console.error('Error logging in:', err);
     res.status(500).send({ message: 'An error occurred during login' });

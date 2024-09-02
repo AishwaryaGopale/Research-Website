@@ -3,10 +3,10 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import * as API from "../../Endpoints/Endpoints"
 
-function DeleteuserVC({ valuechainid, onDeleteSuccess }) {
+function DeleteuserSDG({ sdgid, onDeleteSuccess }) {
   const handleDelete = async () => {
     try {
-      await axios.delete(API.DELETE_VC_API(valuechainid));
+      await axios.delete(API.DELETE_VC_API(sdgid));
       toast.success('VC deleted successfully');
       onDeleteSuccess(); // Refresh the list after successful delete
     } catch (error) {
@@ -25,4 +25,4 @@ function DeleteuserVC({ valuechainid, onDeleteSuccess }) {
   );
 }
 
-export default DeleteuserVC;
+export default DeleteuserSDG;

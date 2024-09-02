@@ -2,55 +2,57 @@ import React, { useState, useEffect } from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSignOutAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import logo from './Images/passionit.png';
 import { Link } from "react-router-dom";
 import Chatbot from "../Bot/Boat";
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 
 const User = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
-
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const decodeToken = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decoded = jwtDecode(token);
-                const userId = parseInt(decoded.id, 10);
-                setUserId(userId);
-                localStorage.setItem('id', userId);
-
-                console.log('Decoded token:', decoded);
-                console.log('User ID:', userId);
-            }
-        } catch (error) {
-            console.error('Error decoding token:', error);
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decoded = jwtDecode(token);
+          const userId = parseInt(decoded.id, 10);
+          setUserId(userId);
+          localStorage.setItem('id', userId);
+          setEmail(decoded.email);
+          console.log('Decoded token:', decoded);
+          console.log('User ID:', userId);
         }
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
     };
 
     if (isLoggedIn) {
-        decodeToken();
+      decodeToken();
     }
   }, [isLoggedIn]);
 
   useEffect(() => {
-    // Check if token exists in local storage
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // Convert token to boolean
   }, []);
 
   const handleLogout = () => {
-    // Remove token from local storage
     localStorage.removeItem("token");
-    setIsLoggedIn(false); // Update state to reflect logged-out status
-    localStorage.removeItem("id"); // Remove user ID as well
-    // Redirect to login page
+    setIsLoggedIn(false);
+    localStorage.removeItem("id");
     navigate("/user");
+  };
+
+  const handleProfileClick = () => {
+    setProfileMenuOpen(!profileMenuOpen);
   };
 
   return (
@@ -58,7 +60,7 @@ const User = () => {
       <div className="sticky top-0 bg-[#112ea3]">
         <nav>
           <div className="mx-auto max-w-7xl">
-            <div className="flex justify-between items-center mx-auto w-5/5">
+            <div className="flex justify-between items-center mx-auto w-full">
               <div className="flex items-center justify-between my-2 lg:justify-end lg:gap-[100px] md:font-medium">
                 <Link to=" ">
                   <img src={logo} alt="" className="h-[40px] w-[100px]" />
@@ -73,7 +75,6 @@ const User = () => {
                   <Link to="community" className="mr-6 text-white">
                     Community
                   </Link>
-
                   <div className="relative group inline-block">
                     <Link
                       to="research"
@@ -135,16 +136,32 @@ const User = () => {
                   <button onClick={() => setToggleMenu(!toggleMenu)}>
                     <Bars3Icon className="h-6" />
                   </button>
+                  {isLoggedIn && <p className="text-white ml-2">{email}</p>}
                 </div>
-                {/* Conditionally render Logout Button */}
+                {/* Profile Logo and Menu */}
                 {isLoggedIn && (
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center text-white hover:text-gray-300 focus:outline-none lg:flex"
-                  >
-                    <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                    Logout
-                  </button>
+                  <div className="relative flex items-center">
+                    <button
+                      onClick={handleProfileClick}
+                      className="flex items-center text-white hover:text-gray-300 focus:outline-none"
+                    >
+                      <FontAwesomeIcon icon={faUserCircle} className="h-6" />
+                      {email && <span className="ml-2 text-white">{email}</span>}
+                    </button>
+                    {profileMenuOpen && (
+                      <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg">
+                        <div className="px-4 py-2 text-gray-800">
+                          <p className="font-semibold">{email}</p>
+                          <button
+                            onClick={handleLogout}
+                            className="mt-2 w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200 focus:bg-gray-200"
+                          >
+                            Logout
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -173,10 +190,9 @@ const User = () => {
       <div>
         <Outlet />
       </div>
-      {/* Show Chatbot only when logged in */}
       {isLoggedIn && (
         <div className="fixed bottom-4 right-4">
-          <Chatbot userid={userId}/>
+          <Chatbot userid={userId} />
         </div>
       )}
     </>
