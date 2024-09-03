@@ -80,6 +80,7 @@ function Chatbot() {
    const [response, setResponse] = useState("");
    const [loading, setLoading] = useState(false);
    const [casestudy, setcasestudy] = useState(false);
+   const [taxonomy, settaxonomy] = useState(false);
    //////////////////////loading//////////////////
    const [researchtitleloading, setresearchtitleloading] = useState(false);
    const [researchobjloading,setresearchobjloading] = useState(false);
@@ -131,6 +132,7 @@ function Chatbot() {
    const [sdgtechloading, setsdgtechloading] = useState(false);
    const [sdgsteamloading, setsdgsteamloading] = useState(false);
    const [casestudyloading, setcasestudyloading] = useState(false);
+   const [taxonomyloading, settaxonomyloading] = useState(false);
    const userId = localStorage.getItem("id");
   console.log("Selected Research Title",selectedResearchTitle)
   useEffect(() => {
@@ -465,6 +467,13 @@ const handlevaluechaintermsClick = async() => {
     await quantile(valuechaintermsPrompt);
 };
 
+const handleTaxonomyClick = async() => {
+  const taxonomyPrompt = `Give related taxonomy for the following description: ${description},valuechain: ${valuechainbutton},subvaluechain: ${subvaluechain},Technology: ${technology} and subtechnology: ${subtechnology}`;
+    setPrompt(taxonomyPrompt);
+    settaxonomyloading(true);
+    await quantile(taxonomyPrompt);
+};
+
 ////////////////sdg project///////////
 const handlesdgprojectClick =() => {
   setshowSDGbuttons(!showSDGbuttons);
@@ -672,6 +681,8 @@ const quantile = async (prompt) => {
         setsubtechnology(contentText);
       } else if (prompt.includes("Related Terms of valuechain")) {
         setvaluechainterms(contentText);
+      } else if (prompt.includes("Give related taxonomy")) {
+        settaxonomy(contentText);
         ///////////sdg project button/////////////
       } else if (prompt.includes("sustainable development goals(sdg) titles")) {
         const titles = contentText
@@ -892,6 +903,7 @@ const handlevaluechainSubmit = async () => {
     valuechaintechnology:technology,
     valuechainsubtechnology:subtechnology,
     valuechainrelatedterm:valuechainterms,
+    taxonomy:taxonomy,
     regid:userId,
   };
   try {
@@ -904,6 +916,7 @@ const handlevaluechainSubmit = async () => {
     settechnology('');
     setsubtechnology('');
     setvaluechainterms('');
+    settaxonomy('');
     setTimeout(() => {
       setSuccessMessage('');
     }, 3000);
@@ -1756,7 +1769,21 @@ const handlesdgSubmit = async () => {
                   <p>{valuechainterms}</p>
                 </div>
               )}
-                </div>  
+                </div> 
+                <div className="mt-4">
+                   <button
+                  onClick={handleTaxonomyClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {taxonomyloading ? "Loading..." : "Taxonomy"} 
+                </button>
+                {!taxonomyloading && taxonomy && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Taxonomy</h3>
+                  <p>{taxonomy}</p>
+                </div>
+              )}
+                </div> 
         <div className="flex justify-center">
                   <button
                   onClick={handlevaluechainSubmit}

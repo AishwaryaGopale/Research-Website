@@ -38,7 +38,8 @@ function ViewVcbot() {
       item.subvaluechain?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.valuechaintechnology?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.valuechainsubtechnology?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.valuechainrelatedterms?.toLowerCase().includes(searchQuery.toLowerCase())
+      item.valuechainrelatedterms?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.taxonomy?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
 
@@ -99,6 +100,10 @@ function ViewVcbot() {
     yPosition = checkAndAddPage(yPosition);
     yPosition += addText(item.valuechainrelatedterms, 10, yPosition);
 
+    yPosition = addHeading(`Taxonomy:`, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition);
+    yPosition += addText(item.taxonomy, 10, yPosition);
+
     doc.save(`${item.valuechain}.pdf`);
   };
 
@@ -128,6 +133,7 @@ function ViewVcbot() {
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Technology</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Sub Technology</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Related Terms</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Taxonomy</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
@@ -168,6 +174,9 @@ function ViewVcbot() {
                   </td>
                   <td className="px-6 py-4 w-1/9 align-top">
                     <p className="leading-relaxed whitespace-normal">{item.valuechainrelatedterms}</p>
+                  </td>
+                  <td className="px-6 py-4 w-1/9 align-top">
+                    <p className="leading-relaxed whitespace-normal">{item.taxonomy}</p>
                   </td>
                 </tr>
               ))

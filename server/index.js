@@ -338,7 +338,8 @@ app.get("/research-api/vcbot", (req, res) => {
   b.subvaluechain,
   b.valuechaintechnology,
   b.valuechainsubtechnology,
-  b.valuechainrelatedterms
+  b.valuechainrelatedterms,
+  b.taxonomy,
   FROM 
     registration a
   JOIN 
@@ -363,14 +364,15 @@ app.post("/research-api/valuechain", (req, res) => {
     valuechaintechnology,
     valuechainsubtechnology,
     valuechainrelatedterms,
+    taxonomy,
     regid,
   } = req.body;
 
   const sqlInsert = `
     INSERT INTO valuechaindb (
-      valuechaindescription, valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology, valuechainrelatedterms, regid
+      valuechaindescription, valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology, valuechainrelatedterms,taxonomy, regid
     ) VALUES (
-      $1, $2, $3, $4, $5, $6, $7
+      $1, $2, $3, $4, $5, $6, $7, $8
     ) RETURNING valuechainid;
   `;
   db.query(
@@ -382,6 +384,7 @@ app.post("/research-api/valuechain", (req, res) => {
       valuechaintechnology,
       valuechainsubtechnology,
       valuechainrelatedterms,
+      taxonomy,
       regid,
     ],
     (error, result) => {
@@ -843,7 +846,7 @@ app.put('/research-api/valuechaindb/:valuechainid', async (req, res) => {
   const { valuechainid } = req.params;
   const {
     valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology,
-    valuechainrelatedterms, valuechaindescription
+    valuechainrelatedterms,taxonomy, valuechaindescription
   } = req.body;
 
   try {
@@ -851,12 +854,12 @@ app.put('/research-api/valuechaindb/:valuechainid', async (req, res) => {
       UPDATE valuechaindb
       SET 
         valuechain = $1, subvaluechain = $2, valuechaintechnology = $3, valuechainsubtechnology = $4,
-        valuechainrelatedterms = $5, valuechaindescription = $6
-      WHERE valuechainid = $7`;
+        valuechainrelatedterms = $5,taxonomy= $6 valuechaindescription = $7
+      WHERE valuechainid = $8`;
 
     await db.query(query, [
       valuechain, subvaluechain, valuechaintechnology, valuechainsubtechnology,
-      valuechainrelatedterms, valuechaindescription, valuechainid
+      valuechainrelatedterms,taxonomy, valuechaindescription, valuechainid
     ]);
 
     res.status(200).json({ message: 'Value Chain updated successfully' });

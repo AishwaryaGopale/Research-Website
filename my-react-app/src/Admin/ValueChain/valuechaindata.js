@@ -96,6 +96,11 @@ function ViewVc() {
     yPosition += addText(item.valuechainrelatedterms, 10, yPosition);
     yPosition = checkAndAddPage(yPosition + lineHeight);
 
+    yPosition = addHeading(`Taxonnomy:`, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition);
+    yPosition += addText(item.taxonomy, 10, yPosition);
+    yPosition = checkAndAddPage(yPosition + lineHeight);
+
     doc.save(`${item.valuechaindescription}.pdf`);
   };
 
@@ -115,6 +120,7 @@ function ViewVc() {
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Technology</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Sub Technology</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Related Terms</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Taxonomy</th>
               <th className="px-6 py-3 text-left text-sm font-semibold w-1/9">Actions</th> 
             </tr>
           </thead>
@@ -135,6 +141,7 @@ function ViewVc() {
                   <td className="px-6 py-4 w-1/9 align-top">{item.valuechaintechnology}</td>
                   <td className="px-6 py-4 w-1/9 align-top">{item.valuechainsubtechnology}</td>
                   <td className="px-6 py-4 w-1/9 align-top">{item.valuechainrelatedterms}</td>
+                  <td className="px-6 py-4 w-1/9 align-top">{item.taxonomy}</td>
                   <td className="px-6 py-4 w-1/9 align-top">
                     <div className="block">
                       <div className="mb-2">
