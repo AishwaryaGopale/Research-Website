@@ -25,7 +25,7 @@ import * as API from "../Endpoints/Endpoints"
       });
       if (response.ok) {
         alert("Registration successful");
-        history("/login");
+        history("/verify-otp");
       } else {
         const data = await response.text();
         alert("Registration failed: " + data);

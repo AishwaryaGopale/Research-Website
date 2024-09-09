@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import loginImg from './loginimg.png'; // Updated import statement for the image
-import { useNavigate } from "react-router-dom";
 import * as API from "../User/Endpoints/Endpoints";
 
 const LoginForm = () => {
@@ -19,13 +19,17 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Save token and admin status in local storage
-        localStorage.setItem("token", data.token);
-        localStorage.setItem('isAdmin', data.isAdmin); // Save admin status
-        if (data.isAdmin) {
-          navigate("/admin"); // Redirect to admin page
+        // Check if the user is verified
+        if (data) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem('isAdmin', data.isAdmin); // Save admin status
+          if (data.isAdmin) {
+            navigate("/admin"); // Redirect to admin page
+          } else {
+            navigate("/user"); // Redirect to user home page
+          }
         } else {
-          navigate("/user"); // Redirect to user home page
+          alert("Your account is not verified. Please check your email for verification.");
         }
       } else {
         alert("Login failed: " + data.message);
@@ -36,57 +40,62 @@ const LoginForm = () => {
     }
   };
 
-  const Reg = () => {
+  const navigateToRegister = () => {
     navigate("/register");
+  };
+
+  const navigateToForgotPassword = () => {
+    navigate("/forgot-password");
   };
 
   return (
     <>
       <div className="grid w-full h-screen grid-cols-1 sm:grid-cols-2">
         <div className='hidden sm:block'>
-          <img className='object-cover w-full h-full' src={loginImg} alt='hello' /> {/* Updated image source */}
+          <img className='object-cover w-full h-full' src={loginImg} alt='Login' />
         </div>
-        <div className='bg-[white] flex flex-col justify-center'>
+        <div className='bg-white flex flex-col justify-center'>
           <form className='max-w-[400px] w-full mx-auto p-8 px-8 rounded-lg'>
-            <h2 className='text-4xl dark:text-[white] font-bold text-center py-[40px]'>WELCOME BACK</h2>
-            <div className='flex flex-col py-2 text-black'>
-              <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>
+            <h2 className='text-4xl font-bold text-center py-4'>WELCOME BACK</h2>
+            <div className='flex flex-col py-2'>
+              <label htmlFor="email" className="block text-lg font-medium">Email</label>
               <input
-                className='mt-1 p-2 w-full border border-black rounded-md text-lg'
+                className='mt-1 p-2 w-full border border-gray-400 rounded-md'
                 type='email'
-                value={email} // Bind state variable
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div className='flex flex-col py-2 text-black'>
-              <label htmlFor="password" className="block text-lg font-medium text-gray-700">Password</label>
+            <div className='flex flex-col py-2'>
+              <label htmlFor="password" className="block text-lg font-medium">Password</label>
               <input
-                className='mt-1 p-2 w-full border border-black rounded-md text-lg'
+                className='mt-1 p-2 w-full border border-gray-400 rounded-md'
                 type='password'
-                value={password} // Bind state variable
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
             <button
-              className="w-full py-2 my-5 font-semibold text-white bg-[red] rounded-md shadow-md hover:bg-[#fa7575] focus:outline-none focus:ring focus:border-teal-700"
+              className="w-full py-2 mt-4 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600"
               onClick={handleSubmit}
             >
               Login
             </button>
-            <div>
-              <div className='font-bold text-center'>
-                <h2 className='text-[#D62102]'>Or Login with</h2>
-              </div>
-              <div className="md:w-2/1 pl-[55px] font-Manrope font-semibold pt-[30px] p-4">
-                <span>
-                  <div className='inline text-[gray]'>Not a Member yet? </div>
-                  <div className='text-[#D62102] inline'>
-                    <button onClick={Reg}>Sign Up</button>
-                  </div>
-                </span>
-              </div>
+            <div className="text-center mt-2">
+              <button className="text-red-500 hover:underline" onClick={navigateToForgotPassword}>
+                Forgot Password?
+              </button>
+            </div>
+            <div className='font-bold text-center mt-4'>
+              <h2 className='text-gray-500'>Or Login with</h2>
+            </div>
+            <div className="mt-4 text-center">
+              <span className='text-gray-400'>Not a Member yet? </span>
+              <button className='text-red-500 hover:underline' onClick={navigateToRegister}>
+                Sign Up
+              </button>
             </div>
           </form>
         </div>

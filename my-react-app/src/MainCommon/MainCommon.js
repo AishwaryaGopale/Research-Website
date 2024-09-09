@@ -45,6 +45,9 @@ import DeleteuserVC from "../User/Bot/addeditvc/deletevc";
 import EdituserVC from "../User/Bot/addeditvc/editvc";
 import DeleteuserSDG from "../User/Bot/addeditsdg/deletesdg";
 import EdituserSDG from "../User/Bot/addeditsdg/editsdg";
+import ForgotPassword from "../Log/Forgotpass";
+import ResetPassword from "../Log/Resetpass";
+import VerifyOTP from "../Log/VerifyOtp";
 
 
 const PrivateRoute = ({ children }) => {
@@ -64,6 +67,9 @@ const MainCommon = () => {
           {/* Public routes */}
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegistrationPage />} />
+          <Route path="reset-password/:token" element={<ResetPassword />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="verify-otp" element={<VerifyOTP />} />
 
           {/* Protected user routes */}
           <Route path="user" element={<User />}>
@@ -91,6 +97,7 @@ const MainCommon = () => {
             <Route path="SDGview" element={<Viewsdgbot />} />
             <Route path="editSDG" element={<EdituserSDG />} />
             <Route path="deleteSDG" element={<DeleteuserSDG />} />
+            
 
             <Route path="*" element={
               <div>

@@ -11,6 +11,9 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { Sequelize, DataTypes } = require("sequelize");
 const port = 5002;
+require ("dotenv").config()
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 // Database connection
 const db = new Pool({
@@ -619,28 +622,65 @@ app.post('/research-api/register', async (req, res) => {
     const existingUserResult = await db.query(existingUserQuery, [email]);
 
     if (existingUserResult.rows.length > 0) {
-      return res.status(400).send('User already exists');
+      return res.status(400).json({ message: "User already exists" });
     }
+
+    // Generate OTP
+    function generateOTP() {
+      return crypto.randomInt(100000, 999999).toString();
+    }
+
+    const otp = generateOTP();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert the new user into the database
     const insertUserQuery = `
-      INSERT INTO public.registration (membername, email, organizationname, password)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO public.registration 
+      (membername, email, organizationname, password, isadmin, is_verified, user_otp, otp_expiry)
+      VALUES ($1, $2, $3, $4, false, false, $5, $6)
       RETURNING regid;
     `;
+    const newUserResult = await db.query(insertUserQuery, [
+      membername, email, organizationname, hashedPassword, otp, otpExpiry
+    ]);
 
-    const newUserResult = await db.query(insertUserQuery, [membername, email, organizationname, hashedPassword]);
+    // Send OTP to user's email
+    await transporter.sendMail({
+      from: process.env.EMAIL,
+      to: email,
+      subject: "OTP for Email Verification",
+      html: `
+      <!DOCTYPE html>
+      <html>
+      <body style="font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4; padding: 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <p>Hello,</p>
+          <p>Your OTP for email verification is:</p>
+          <h2 style="font-size: 24px; font-weight: bold; color: #ff3131;">${otp}</h2>
+          <p>This OTP will expire in 10 minutes. Please use it to verify your email address.</p>
+          <p>If you did not request this, please ignore this email.</p>
+          <div style="text-align: center; font-size: 14px; color: #888; margin-top: 20px;">
+            <p>&copy; ${new Date().getFullYear()} Passion Framework Audit. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    });
 
-    // Registration successful
-    res.status(201).send('User registered successfully');
+    res.status(201).json({
+      message:
+        "User registered successfully. Please verify your email using the OTP sent to your email.",
+    });
   } catch (err) {
-    console.error('Error registering user:', err); 
-    res.status(500).send('An error occurred while registering the user');
+    console.error("Error signing up:", err);
+    res.status(500).json({ message: "Error signing up" });
   }
 });
+
 
 // Login an existing user
 app.post('/research-api/login', async (req, res) => {
@@ -661,6 +701,11 @@ app.post('/research-api/login', async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).send({ message: 'Invalid email or password' });
+    }
+
+    // Check if the user is verified
+    if (user.is_verified !== true) {
+      return res.status(400).send({ message: 'Your account is not verified. Please check your email for verification.' });
     }
 
     // Generate a JWT token with user role
@@ -692,6 +737,156 @@ app.get("/research-api/protected", (req, res) => {
     res.send("Protected data");
   } catch (err) {
     res.status(401).send("Invalid token");
+  }
+});
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL, // Your email address
+    pass: process.env.EMAIL_PASSWORD, // Your email password
+  },
+});
+
+function generateResetLink(email, regid) {
+  const secret = process.env.JWT_SECRET; // Secret key for token
+  const payload = { email, regid };
+  const token = jwt.sign(payload, secret, { expiresIn: "1h" }); // Token expires in 1 hour
+  return `${process.env.CLIENT_URL}/reset-password/${token}`; // Your front-end reset password page
+}
+
+// Password Reset Request API
+app.post("/research-api/reset-password", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if the user exists in the database
+    const result = await db.query(
+      "SELECT * FROM registration WHERE email = $1",
+      [email]
+    );
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate reset link
+    const resetLink = generateResetLink(email, user.regid);
+
+    // Send email with reset link
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Password Reset",
+      html: `<p>Hi ${user.membername || "User"},</p>
+             <p>You requested a password reset. Click the link below to reset your password:</p>
+             <a href="${resetLink}">Reset Password</a>
+             <p>This link will expire in 1 hour.</p>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ message: "Failed to send email", error });
+      }
+      res
+        .status(200)
+        .json({ message: "Password reset link sent successfully" });
+    });
+  } catch (error) {
+    console.error("Error handling password reset request:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Forgot Password API
+app.post("/research-api/password", async (req, res) => {
+  const { regid, password } = req.body; // Use regid as it is in your database
+
+  try {
+    // Fetch the user from the database by regid
+    const result = await db.query(
+      "SELECT * FROM registration WHERE regid = $1",
+      [regid]
+    );
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Hash the new password
+    const hashedNewPassword = await bcrypt.hash(password, 10);
+
+    // Update the password in the database
+    await db.query(
+      "UPDATE registration SET password = $1 WHERE regid = $2",
+      [hashedNewPassword, regid]
+    );
+
+    res.status(200).json({ message: "Password has been reset successfully" });
+  } catch (err) {
+    console.error("Error resetting password:", err);
+    res.status(500).json({ message: "Error resetting password" });
+  }
+});
+
+// Token Validation API
+app.post("/research-api/validate-reset-token", (req, res) => {
+  const { token } = req.body;
+  const secret = process.env.JWT_SECRET;
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, secret);
+
+    // Token is valid, respond with success
+    res.status(200).json({ valid: true, decoded });
+  } catch (error) {
+    // Token is invalid or expired
+    res.status(400).json({ valid: false, message: "Invalid or expired token" });
+  }
+});
+
+// OTP Verification route
+app.post("/research-api/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    // Fetch user by email
+    const user = await db.query(
+      "SELECT * FROM registration WHERE email = $1",
+      [email]
+    );
+
+    if (user.rows.length === 0) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const userData = user.rows[0];
+
+    // Check if OTP matches and is not expired
+    if (
+      userData.user_otp === otp &&
+      new Date() < new Date(userData.otp_expiry)
+    ) {
+      // Mark user as verified
+      await db.query(
+        "UPDATE registration SET is_verified = true, user_otp = NULL, otp_expiry = NULL WHERE email = $1",
+        [email]
+      );
+
+      res
+        .status(200)
+        .json({ message: "User verified successfully. You can now log in." });
+    } else {
+      res
+        .status(400)
+        .json({ message: "Invalid or expired OTP. Please try again." });
+    }
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    res.status(500).json({ message: "Error verifying OTP" });
   }
 });
 
