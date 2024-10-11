@@ -26,7 +26,7 @@ const LoginForm = () => {
           if (data.isAdmin) {
             navigate("/admin"); // Redirect to admin page
           } else {
-            navigate("/user"); // Redirect to user home page
+            navigate("/"); // Redirect to user home page
           }
         } else {
           alert("Your account is not verified. Please check your email for verification.");

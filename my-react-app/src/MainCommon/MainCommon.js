@@ -72,7 +72,7 @@ const MainCommon = () => {
             <Route path="verify-otp" element={<VerifyOTP />} />
 
           {/* Protected user routes */}
-          <Route path="user" element={<User />}>
+          <Route path="/" element={<User />}>
             <Route path="" element={<HomePage />} />
             <Route path="about" element={<About />} />
             <Route path="community" element={<Community />} />

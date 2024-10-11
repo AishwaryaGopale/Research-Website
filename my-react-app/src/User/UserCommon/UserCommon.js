@@ -48,7 +48,7 @@ const User = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     localStorage.removeItem("id");
-    navigate("/user");
+    navigate("/");
   };
 
   const handleProfileClick = () => {
