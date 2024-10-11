@@ -167,6 +167,7 @@ function ViewChatbot() {
 
     doc.save(`${item.researchtitle}.pdf`);
   };
+ 
 
   return (
     <div className="container mx-auto px-4 mt-10">
@@ -207,9 +208,10 @@ function ViewChatbot() {
           <tbody>
             {filteredBots.map((item, index) => (
               <tr key={item.id} className="border-b">
+                
                 <td className="px-6 py-4 whitespace-nowrap">
                   <EdituserResearch item={item} /> {/* Edit action */}
-                  <DeleteuserResearch item={item} /> {/* Delete action */}
+                  <DeleteuserResearch itemId={item.researchid} /> {/* Delete action */}
                   <button
                     className="text-blue-500 hover:underline ml-2"
                     onClick={() => handleImport(item)}
