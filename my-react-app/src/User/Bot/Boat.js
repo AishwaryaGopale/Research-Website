@@ -77,8 +77,24 @@ function Chatbot() {
    const [sdgrectechnologies, setsdgrectechnologies] = useState('');
    const [sdgSTEAM, setsdgSTEAM] = useState('');
    const [showSDGbuttons, setshowSDGbuttons] = useState('');
+   const [techTitles, settechTitles] = useState('');
+   const [selectedtechTitle, setselectedtechTitle] = useState('');
+   const [techproblem, settechproblem] = useState('');
+   const [techSolution, settechSolution] = useState('');
+   const [techplan, settechplan] = useState('');
+   const [techwork, settechwork] = useState('');
+   const [techqa, settechqa] = useState('');
+   const [techdevop, settechdevop] = useState('');
+   const [techapproach, settechapproach] = useState('');
+   const [techproduct, settechproduct] = useState('');
+   const [techcust, settechcust] = useState('');
+   const [techcloud, settechcloud] = useState('');
+   const [techpbi, settechpbi] = useState('');
+   const [showTechbuttons, setshowTechbuttons] = useState('');
+
+
    const [response, setResponse] = useState("");
-   const [loading, setLoading] = useState(false);
+   const [loading, setloading] = useState(false);
    const [casestudy, setcasestudy] = useState(false);
    const [taxonomy, settaxonomy] = useState(false);
    //////////////////////loading//////////////////
@@ -131,8 +147,22 @@ function Chatbot() {
    const [sdgimpactloading, setsdgimpactloading] = useState(false);
    const [sdgtechloading, setsdgtechloading] = useState(false);
    const [sdgsteamloading, setsdgsteamloading] = useState(false);
+   const [techtitleloading, settechtitleloading] = useState(false);
+   const [techproblemloading, settechproblemloading] = useState(false);
+   const [techsolutionloading, settechsolutionloading] = useState(false);
+   const [techplanloading, settechplanloading] = useState(false);
+   const [techworkloading, settechworkloading] = useState(false);
+   const [techqaloading, settechqaloading] = useState(false);
+   const [techdevoploading, settechdevoploading] = useState(false);
+   const [techapproachloading, settechapproachloading] = useState(false);
+   const [techproductloading, settechproductloading] = useState(false);
+   const [techcustloading, settechcustloading] = useState(false);
+   const [techcloudloading, settechcloudloading] = useState(false);
+   const [techpbiloading, settechpbiloading] = useState(false);
    const [casestudyloading, setcasestudyloading] = useState(false);
    const [taxonomyloading, settaxonomyloading] = useState(false);
+
+
    const userId = localStorage.getItem("id");
   console.log("Selected Research Title",selectedResearchTitle)
   useEffect(() => {
@@ -188,6 +218,7 @@ function Chatbot() {
     setValuechain('');
     setshowSDGbuttons('');
     setcasestudy('');
+    setshowTechbuttons('');
   };
 
 /////////////////for research button/////////
@@ -567,6 +598,172 @@ const handlesdgSTEAMClick = async() => {
     await quantile(sdgSTEAMPrompt);
 };
 
+/////////////////////////Technology Project///////////////
+const handletechprojectClick =() => {
+  setshowTechbuttons(!showTechbuttons);
+};
+
+const handleTechTitleClick = async () => {
+  const TechTitlePrompt = `Give me at least 5 technology project titles for ${description}`;
+  setPrompt(TechTitlePrompt);
+  settechtitleloading(true);
+  await quantile(TechTitlePrompt);
+};
+
+const handleTechTitleSelection = (title) => {
+  setselectedtechTitle(title);
+};
+
+const handleTechProblemClick = async() => {
+  const TechProblemPrompt = `Clearly define the problem, its impact, and the need for resolution.
+Problem Title,
+Description of the Problem,
+Impacted Stakeholders,
+Current Processes and Gaps,
+ISO Compliance Requirements,
+Define gaps in current processes against ISO 9001, 27001, 22301, etc.
+Objective of Resolution
+Expected Outcome for the following title: ${selectedSDGTitle}`;
+    setPrompt(TechProblemPrompt);
+    settechproblemloading(true);
+    await quantile(TechProblemPrompt);
+};
+
+const handleTechSolutionClick = async() => {
+  const TechSolutionPrompt = `Provide a high-level description of the solution, ensuring it aligns with ISO standards and CMMI maturity level goals.
+Solution Title,
+Solution Description,
+Alignment with Industry Standards and Compliance,
+Highlight how the solution addresses ISO and CMMI requirements.
+Impact on Current Systems and Processes
+Integration and Compatibility Requirements
+ for the following title: ${selectedtechTitle}`;
+    setPrompt(TechSolutionPrompt);
+    settechsolutionloading(true);
+    await quantile(TechSolutionPrompt);
+};
+
+const handleTechPlanClick = async() => {
+  const TechplanPrompt = `Give project plan for the following title: ${selectedtechTitle}`;
+    setPrompt(TechplanPrompt);
+    settechplanloading(true);
+    await quantile(TechplanPrompt);
+};
+
+const handleTechWorkClick = async() => {
+  const TechworkPrompt = `Define the scope, deliverables, responsibilities, and timelines for project execution.
+Scope of Work,
+Objectives,
+Detailed Tasks and Responsibilities,
+Deliverables and Milestones,
+Quality Assurance and Compliance,
+Map deliverables to ISO and CMMI requirements.
+Sign-Off and Approvals for the following title: ${selectedtechTitle}`;
+    setPrompt(TechworkPrompt);
+    settechworkloading(true);
+    await quantile(TechworkPrompt);
+};
+
+const handleTechQaClick = async() => {
+  const TechqaPrompt = `Ensure quality assurance practices comply with ISO 9001 and ISO 27001 standards.
+QA Objectives and Scope,
+Quality Assurance Standards and Methodologies,
+ISO Compliance Checklist,
+Map QA practices to ISO and CMMI requirements.
+Testing and Verification Processes
+Continuous Improvement Process (aligned with CMMI Level 5)
+Reporting and Feedback Loops for the following title: ${selectedtechTitle}`;
+    setPrompt(TechqaPrompt);
+    settechqaloading(true);
+    await quantile(TechqaPrompt);
+};
+
+const handleTechdevopClick = async() => {
+  const TechdevopPrompt = `Outline DevOps practices to streamline development, testing, and deployment in compliance with ISO and CMMI.
+Goals and Objectives,
+Continuous Integration and Continuous Deployment (CI/CD) Process,
+Compliance and Security Measures,
+ISO 27001, ISO 20000, ISO 27018 security standards.
+Monitoring and Incident Response,
+Automation and Tools Selection,
+Metrics for CMMI Level 5 Maturity,
+Feedback Loops for Continuous Improvement for the following description: ${selectedtechTitle}`;
+    setPrompt(TechdevopPrompt);
+    settechdevoploading(true);
+    await quantile(TechdevopPrompt);
+};
+
+const handleTechApproachClick = async() => {
+  const TechapproachPrompt = `Document the technical solution, ensuring it meets security and compliance standards.
+
+Technical Solution Overview,
+Architecture and Design,
+Compliance with Security Standards (ISO 27001, ISO 27018),
+Data Management Strategy,
+Data privacy, access control, and data protection (ISO 27701).
+Risk Management Approach,
+Performance and Scalability Considerations,
+Integration and Compatibility with Existing Systems for the following description: ${selectedtechTitle}`;
+    setPrompt(TechapproachPrompt);
+    settechapproachloading(true);
+    await quantile(TechapproachPrompt);
+};
+
+const handleTechSupportClick = async() => {
+  const TechsuppPrompt = `Define a support strategy that includes post-launch support and ongoing maintenance.
+
+Support Objectives and Scope,
+Types of Support Provided (e.g., Tier 1, Tier 2, Tier 3),
+Support Availability and Response Times,
+Knowledge Management and Training,
+ISO Compliance in Support Operations (ISO 20000),
+Continuous Improvement and Feedback Mechanisms for the following description: ${selectedtechTitle}`;
+    setPrompt(TechsuppPrompt);
+    settechproductloading(true);
+    await quantile(TechsuppPrompt);
+};
+
+const handleTechCustClick = async() => {
+  const TechcustPrompt = `Outline customer support policies, ensuring timely and ISO-compliant responses.
+Customer Support Scope and Objectives,
+Support Channels and Response Time Goals,
+Compliance with Customer Data Privacy (ISO 27701, ISO 27018),
+Feedback Collection and Improvement Process,
+Training and Certification of Support Staff for the following description: ${selectedtechTitle}`;
+    setPrompt(TechcustPrompt);
+    settechcustloading(true);
+    await quantile(TechcustPrompt);
+};
+
+const handleTechcloudClick = async() => {
+  const TechcloudPrompt = `Ensure data, application, and cloud security measures align with ISO 27001, 27018, 22301, and 27701.
+Security Objectives,
+Data Protection and Privacy Controls (ISO 27701, ISO 27018),
+Access Controls and Authentication Mechanisms,
+Incident Response and Recovery (ISO 22301),
+Continuous Security Monitoring,
+Risk Assessment and Management Procedures for the following title: ${selectedtechTitle}`;
+    setPrompt(TechcloudPrompt);
+    settechcloudloading(true);
+    await quantile(TechcloudPrompt);
+};
+
+const handleTechPBIClick = async() => {
+  const TechpbiPrompt = `Establish a PBI list to track project tasks and compliance requirements.
+PBI ID,
+PBI Title,
+Description and Acceptance Criteria,
+Compliance Tags (ISO 9001, 27001, CMMI Level 5, etc.),
+Priority Level,
+Responsible Team Member,
+Status,
+Completion Criteria for the following title: ${selectedtechTitle}`;
+    setPrompt(TechpbiPrompt);
+    settechpbiloading(true);
+    await quantile(TechpbiPrompt);
+};
+
+
 ////////////////////////case study/////////////
 const handlecaseClick = async() => {
 const casestudyprompt = `Please make a case study on how Einstein evolved Einsteins relativativty equation Title Page,Title,Authors,Date,Executive Summary,Overview,Purpose,Key Takeaways,Introduction,Background,Problem Statement,Objectives,Methodology,Approach,Data Collection,Analysis,Company/Subject Overview,History,Industry Context,Current Status,Analysis,Findings,Challenges,Solutions,Results,Outcomes,Impact,Key Metrics,Discussion,Interpretation,Comparison,Lessons Learned,Conclusion,Summary,Recommendations,Future Work,References,Appendices,Supplementary Information for the following description: ${description}`;
@@ -712,6 +909,36 @@ const quantile = async (prompt) => {
           setsdgrectechnologies(contentText);
         } else if (prompt.includes("Give SDG related STEAM Theory(Science,Technology,Engieering,Arts,Mathematics,Humanity)")) {
           setsdgSTEAM(contentText); 
+          ///////////technology project////////////////
+        } else if (prompt.includes("at least 5 technology project titles")) {
+          const titles = contentText
+            .split("\n")
+            .filter((line) => /^\d+\.\s/.test(line))
+            .map((line) => line.replace(/^\d+\.\s/, ""));
+            settechTitles(titles);  
+          } else if (prompt.includes("Clearly define the problem, its impact, and the need for resolution")) {
+            settechproblem(contentText);
+          } else if (prompt.includes("Provide a high-level description of the solution, ensuring it aligns with ISO standards and CMMI maturity level goals")) {
+            settechSolution(contentText);
+          } else if (prompt.includes("Give project plan")) {
+            settechplan(contentText);
+          } else if (prompt.includes("Define the scope, deliverables, responsibilities, and timelines for project execution")) {
+            settechwork(contentText);
+          } else if (prompt.includes("Ensure quality assurance practices comply with ISO 9001 and ISO 27001 standards")) {
+            settechqa(contentText); 
+          } else if (prompt.includes("Outline DevOps practices to streamline development, testing, and deployment in compliance with ISO and CMMI")) {
+            settechdevop(contentText);
+          } else if (prompt.includes("Document the technical solution, ensuring it meets security and compliance standards")) {
+            settechapproach(contentText);
+          } else if (prompt.includes("Define a support strategy that includes post-launch support and ongoing maintenance")) {
+            settechproduct(contentText);
+          } else if (prompt.includes("Outline customer support policies, ensuring timely and ISO-compliant responses")) {
+            settechcust(contentText);
+          } else if (prompt.includes("Ensure data, application, and cloud security measures align with ISO 27001, 27018, 22301, and 27701")) {
+            settechcloud(contentText); 
+          } else if (prompt.includes("Establish a PBI list to track project tasks and compliance requirements")) {
+            settechpbi(contentText);
+      /////////case study/////////////////// 
         } else if (prompt.includes("Please make a case study on how Einstein evolved Einsteins relativativty equation Title Page,Title,Authors,Date,Executive Summary,Overview,Purpose,Key Takeaways,Introduction,Background,Problem Statement,Objectives,Methodology,Approach,Data Collection,Analysis,Company/Subject Overview,History,Industry Context,Current Status,Analysis,Findings,Challenges,Solutions,Results,Outcomes,Impact,Key Metrics,Discussion,Interpretation,Comparison,Lessons Learned,Conclusion,Summary,Recommendations,Future Work,References,Appendices,Supplementary Information for the following description")) {
           setcasestudy(contentText);  
         } 
@@ -767,6 +994,18 @@ const quantile = async (prompt) => {
     setsdgimpactloading(false);
     setsdgtechloading(false);
     setsdgsteamloading(false);
+    settechtitleloading(false);
+    settechproblemloading(false);
+    settechsolutionloading(false);
+    settechplanloading(false);
+    settechworkloading(false);
+    settechqaloading(false);
+    settechdevoploading(false);
+    settechapproachloading(false);
+    settechproductloading(false);
+    settechcustloading(false);
+    settechcloudloading(false);
+    settechpbiloading(false);
     setcasestudyloading(false);
   }
 };
@@ -960,6 +1199,49 @@ const handlesdgSubmit = async () => {
     setsdgimpact('');
     setsdgrectechnologies('');
     setsdgSTEAM('');
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  } catch (error) {
+    console.error('Error submitting data:', error);
+  }
+};
+
+const handleTechSubmit = async () => {
+  const payload = {
+    techdescription:description,
+    techtitle:selectedtechTitle,
+    techproblem:techproblem,
+    techsolution:techSolution,
+    techplan:techplan,
+    techwork:techwork,
+    techqa:techqa,
+    techdevop:techdevop,
+    techapproach:techapproach,
+    techproduct:techproduct,
+    techcustomer:techcust,
+    techcloud:techcloud,
+    techpbi:techpbi,
+    regid:userId,
+  };
+  try {
+    const response = await axios.post(API.POST_TECH_API, payload);
+    console.log('Data submitted successfully:', response.data);
+    setSuccessMessage('Data submitted successfully!');
+    setDescription('');
+    settechTitles('');
+    setselectedtechTitle('');
+    settechproblem('');
+    settechSolution('');
+    settechplan('');
+    settechwork('');
+    settechqa('');
+    settechdevop('');
+    settechapproach('');
+    settechproduct('');
+    settechcust('');
+    settechcloud('');
+    settechpbi('');
     setTimeout(() => {
       setSuccessMessage('');
     }, 3000);
@@ -2021,6 +2303,234 @@ const handlesdgSubmit = async () => {
         </div>
       )}
     </div>
+
+    {/* ////////////////////Technology Project////////////////////// */}
+    <div className="button-wrapper mt-4">
+      <button
+        onClick={handletechprojectClick}
+        className="bg-blue-600 text-white font-bold px-4 py-2 rounded"
+      >
+        Technology Project
+      </button>
+      {showTechbuttons && (
+        <div className="mt-4 flex flex-col space-y-2">
+
+              {/* <div>
+               <Link to="sdgview ">              
+               <button                 
+                  className="bg-gray-200 text-black font-semibold px-4 py-2 rounded w-half mt-4"
+                >
+                   Technology References
+                </button> </Link> </div> */}
+
+          <div className="mt-4">
+                <button
+                  onClick={handleTechTitleClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techtitleloading ? "Loading..." : "Title"} 
+                </button>
+                {!techtitleloading && techTitles.length > 0 && (
+                    <div className="mt-4 bg-gray-100 p-4 rounded-md">
+                      <p>Title</p>
+                      <div className="flex flex-col space-y-2">
+                        {sdgTitles.map((title, index) => (
+                          <label key={index} className="flex items-center space-x-2 block cursor-pointer" onClick={() => handleTechTitleSelection(title)}>
+                            <input type="radio" name="techTitle" value={title} className="form-radio" />
+                            <span>{title}</span>
+                          </label>
+                        ))}
+                      </div>
+                  </div>
+                )}
+              </div>
+              <div>
+                      <input
+                        type="text"
+                        value={selectedtechTitle}
+                        onChange={(e) => handleTechTitleSelection(e.target.value)}
+                        className="w-full p-2 border rounded-md"
+                        placeholder="Selected Technology Title"
+                      />
+                    </div>                
+
+               <div className="mt-4">
+                   <button
+                  onClick={handleTechProblemClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techproblemloading ? "Loading..." : "Problem Statement"} 
+                </button>
+                {!techproblemloading && techproblem && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Problem Statement</h3>
+                  <p>{techproblem}</p>
+                </div>
+              )}
+                </div>  
+
+               <div className="mt-4">
+                   <button
+                  onClick={handleTechSolutionClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techsolutionloading ? "Loading..." : "Solution"} 
+                </button>
+                {!techsolutionloading && techSolution && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Solution</h3>
+                  <p>{techSolution}</p>
+                </div>
+              )}
+                </div>  
+   
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechPlanClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techplanloading ? "Loading..." : "Project Plan"} 
+                </button>
+                {!techplanloading && techplan && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">  Project Plan</h3>
+                  <p>{techplan}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechWorkClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techworkloading ? "Loading..." : "Statement of work"} 
+                </button>
+                {!techworkloading && techwork && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2"> Statement Of Work</h3>
+                  <p>{techwork}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechQaClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techqaloading ? "Loading..." : "QA Strategy"} 
+                </button>
+                {!techqaloading && techqa && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2"> QA Strategy</h3>
+                  <p>{techqa}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechdevopClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techdevoploading ? "Loading..." : "Devop Strategy"} 
+                </button>
+                {!techdevoploading && techdevop && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2"> Devop Strategy</h3>
+                  <p>{techdevop}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechApproachClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techapproachloading ? "Loading..." : "Technical Approach"} 
+                </button>
+                {!techapproachloading && techapproach && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Technical Approach</h3>
+                  <p>{techapproach}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechSupportClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techproductloading ? "Loading..." : "Product Support Approach"} 
+                </button>
+                {!techproductloading && techproduct && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Product Support Approach</h3>
+                  <p>{techproduct}</p>
+                </div>
+              )}
+                </div> 
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechCustClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techcustloading ? "Loading..." : "Customer Support Approach"} 
+                </button>
+                {!techcustloading && techcust && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2"> Customer Support Approach</h3>
+                  <p>{techcust}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechcloudClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techcloudloading ? "Loading..." : "Data Cloud App Security"} 
+                </button>
+                {!techcloudloading && techcloud && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">Data Cloud App Security</h3>
+                  <p>{techcloud}</p>
+                </div>
+              )}
+                </div> 
+
+                <div className="mt-4">
+                   <button
+                  onClick={handleTechPBIClick}
+                  className="bg-gray-200 text-black font-semibold rounded-md px-4 py-2 w-full"
+                  >
+                  {techpbiloading ? "Loading..." : "PBI List"} 
+                </button>
+                {!techpbiloading && techpbi && (
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg shadow">
+                  <h3 className="text-lg font-semibold mb-2">PBI List</h3>
+                  <p>{techpbi}</p>
+                </div>
+              )}
+                </div> 
+          <div className="flex justify-center">
+                  <button
+                  onClick={handleTechSubmit}
+                    className="bg-black text-white font-semibold rounded-md px-4 py-2 mt-2"
+                  >
+                    Submit
+                  </button>
+                  {successMessage && <div className="success-message">{successMessage}</div>}
+                </div>
+        </div>
+      )}
+    </div>
+
+    {/* /////////////case study//////////////////////        */}
             <div className='mt-4'>
         <button
         onClick={handlecaseClick}

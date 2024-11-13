@@ -24,6 +24,10 @@ export const POST_VALUECHAIN_API = `${BASE_URL}valuechain`;
 export const GET_SDG_API = `${BASE_URL}sdgbot`
 export const POST_SDG_API = `${BASE_URL}sdg`;
 
+////////////////technology///////////////
+export const GET_TECH_API = `${BASE_URL}techbot`
+export const POST_TECH_API = `${BASE_URL}technology`;
+
 ///////////////////////journal///////////////
 export const POST_JOURNAL_API = `${BASE_URL}createjournal`;
 export const GET_JOURNAL_API = `${BASE_URL}journals`;

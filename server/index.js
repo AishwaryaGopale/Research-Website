@@ -488,6 +488,64 @@ app.post("/research-api/sdg", (req, res) => {
   );
 });
 
+///////////////////////technology db//////////////////////
+app.get('/research-api/techbot', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM technologydb');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST a new record
+app.post('/research-api/technology', async (req, res) => {
+  const {
+    techid,
+    techdescription,
+    techtitle,
+    techproblem,
+    techsolution,
+    techplan,
+    techwork,
+    techqa,
+    techdevop,
+    techapproach,
+    techproduct,
+    techcustomer,
+    techcloud,
+    techpbi,
+  } = req.body;
+
+  try {
+    const query = `
+      INSERT INTO technologydb (techid, techdescription, techtitle, techproblem, techsolution, techplan, techwork, techqa, techdevop, techapproach, techproduct, techcustomer, techcloud, techpbi)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *
+    `;
+    const values = [
+      techid,
+      techdescription,
+      techtitle,
+      techproblem,
+      techsolution,
+      techplan,
+      techwork,
+      techqa,
+      techdevop,
+      techapproach,
+      techproduct,
+      techcustomer,
+      techcloud,
+      techpbi,
+    ];
+
+    const result = await db.query(query, values);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Route to create a journal with file upload
 app.post(
   "/research-api/createjournal",
